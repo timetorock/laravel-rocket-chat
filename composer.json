@@ -10,7 +10,6 @@
             "email": "alejandronat@gmail.com"
         }
     ],
-    "minimum-stability": "dev",
     "prefer-stable": true,
     "require": {
         "illuminate/support": "^6.0",
