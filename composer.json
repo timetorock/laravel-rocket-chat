@@ -1,0 +1,25 @@
+{
+    "name": "timetorock/laravel-rocket-chat",
+    "description": "Rocket Chat REST API client for Laravel 6.x.",
+    "license": "MIT",
+    "type": "library",
+    "keywords": ["laravel", "rocket-chat-laravel", "rocket-chat", "api-client"],
+    "authors": [
+        {
+            "name": "Aleksandr Natalenko",
+            "email": "alejandronat@gmail.com"
+        }
+    ],
+    "minimum-stability": "dev",
+    "prefer-stable": true,
+    "require": {
+        "illuminate/support": "^6.0",
+        "nategood/httpful": "*",
+        "symfony/http-foundation": "^4.3.4"
+    },
+    "autoload": {
+        "psr-4": {
+            "Timetorock\\LaravelRocketChat\\": "src"
+        }
+    }
+}
