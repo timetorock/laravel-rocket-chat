@@ -13,77 +13,77 @@ class User extends Entity
     /**
      * @var string
      */
-    private $id;
+    protected $id;
 
     /**
      * @var string
      */
-    private $username;
+    protected $username;
 
     /**
      * @var string
      */
-    private $password;
+    protected $password;
 
     /**
      * @var string
      */
-    private $name;
+    protected $name;
 
     /**
      * @var string
      */
-    private $email;
+    protected $email;
 
     /**
      * @var array
      */
-    private $emails;
+    protected $emails;
 
     /**
      * @var array
      */
-    private $roles = [self::DEFAULT_USER_ROLE];
+    protected $roles = [self::DEFAULT_USER_ROLE];
 
     /**
      * @var bool
      */
-    private $active = true;
+    protected $active = true;
 
     /**
      * @var string
      */
-    private $status;
+    protected $status;
 
     /**
      * @var string
      */
-    private $type;
+    protected $type;
 
     /**
      * @var bool
      */
-    private $joinDefaultChannels = true;
+    protected $joinDefaultChannels = true;
 
     /**
      * @var bool
      */
-    private $requirePasswordChange = false;
+    protected $requirePasswordChange = false;
 
     /**
      * @var bool
      */
-    private $sendWelcomeEmail = false;
+    protected $sendWelcomeEmail = false;
 
     /**
      * @var bool
      */
-    private $verified = false;
+    protected $verified = false;
 
     /**
      * @var string
      */
-    private $authToken;
+    protected $authToken;
 
     /**
      * @var array

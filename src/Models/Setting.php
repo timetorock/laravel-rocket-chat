@@ -7,12 +7,12 @@ class Setting extends Entity
     /**
      * @var string
      */
-    private $id;
+    protected $id;
 
     /**
      * @var string
      */
-    private $value;
+    protected $value;
 
     /**
      * @var array

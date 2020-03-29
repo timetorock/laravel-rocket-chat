@@ -8,52 +8,52 @@ class Integration extends Entity
     /**
      * @var string
      */
-    private $id;
+    protected $id;
 
     /**
      * @var string
      */
-    private $type;
+    protected $type;
 
     /**
      * @var string
      */
-    private $name;
+    protected $name;
 
     /**
      * @var boolean
      */
-    private $enabled;
+    protected $enabled;
 
     /**
      * @var string
      */
-    private $username;
+    protected $username;
 
     /**
      * @var string
      */
-    private $event;
+    protected $event;
 
     /**
      * @var array
      */
-    private $urls;
+    protected $urls;
 
     /**
      * @var boolean
      */
-    private $scriptEnabled;
+    protected $scriptEnabled;
 
     /**
      * @var string
      */
-    private $userId;
+    protected $userId;
 
     /**
      * @var array
      */
-    private $channel;
+    protected $channel;
 
     /**
      * @var array

@@ -11,22 +11,22 @@ class Room extends Entity
     /**
      * @var string
      */
-    private $id;
+     protected $id;
 
     /**
      * @var string
      */
-    private $name;
+     protected $name;
 
     /**
      * @var array
      */
-    private $members = [];
+     protected $members = [];
 
     /**
      * @var bool
      */
-    private $readOnly = false;
+     protected $readOnly = false;
 
     /**
      * Types available:
@@ -37,7 +37,7 @@ class Room extends Entity
      * Private by default
      * @var string
      */
-    private $type = 'p';
+     protected $type = 'p';
 
     /**
      * @var array

@@ -7,7 +7,7 @@ class Im extends Entity
     /**
      * @var string
      */
-    private $id;
+    protected $id;
 
     /**
      * @var array
