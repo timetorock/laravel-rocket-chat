@@ -41,7 +41,7 @@ class Client
      */
     function __construct($adminLogin = true, $apiUrl = '')
     {
-        $this->apiUrl = $apiUrl ?: config("rocket_chat.instance") . config("rocket_chat.api_root");
+        $this->apiUrl = $apiUrl ?: config("laravel-rocket-chat.instance") . config("laravel-rocket-chat.api_root");
         $this->request = RocketChatRequest::singleton();
 
         if (!$adminLogin) {
@@ -83,8 +83,8 @@ class Client
      */
     public function adminLogin()
     {
-        $adminUser = config("rocket_chat.admin_username");
-        $adminPassword = config("rocket_chat.admin_password");
+        $adminUser = config("laravel-rocket-chat.admin_username");
+        $adminPassword = config("laravel-rocket-chat.admin_password");
 
         if (!$adminUser || !$adminPassword) {
             return false;
