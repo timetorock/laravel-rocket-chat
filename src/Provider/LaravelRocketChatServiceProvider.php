@@ -23,7 +23,7 @@ class LaravelRocketChatServiceProvider extends ServiceProvider
     public function boot()
     {
         $this->publishes([
-            __DIR__ . '/config/laravel-rocket-chat.php' => config_path('laravel-rocket-chat.php'),
+            __DIR__ . '/../config/laravel-rocket-chat.php' => config_path('laravel-rocket-chat.php'),
         ], 'config');
     }
 
