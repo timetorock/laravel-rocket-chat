@@ -88,7 +88,7 @@ class User extends Entity
     /**
      * @var array
      */
-    private $fillable = [
+    protected $fillable = [
         "id", "username", "password", "name", "email", "roles", "active",
         "joinDefaultChannels", "requirePasswordChange", "sendWelcomeEmail", "verified",
     ];

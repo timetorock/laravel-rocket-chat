@@ -12,7 +12,7 @@ class Im extends Entity
     /**
      * @var array
      */
-    private $fillable = [
+    protected $fillable = [
         "id"
     ];
 

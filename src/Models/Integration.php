@@ -58,7 +58,7 @@ class Integration extends Entity
     /**
      * @var array
      */
-    private $fillable = ['type', 'name', 'enabled', 'username', 'event', 'urls', 'scriptEnabled', 'userId', 'channel'];
+    protected $fillable = ['type', 'name', 'enabled', 'username', 'event', 'urls', 'scriptEnabled', 'userId', 'channel'];
 
     /**
      * @return string

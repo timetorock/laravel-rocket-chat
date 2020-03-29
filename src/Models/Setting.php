@@ -17,7 +17,7 @@ class Setting extends Entity
     /**
      * @var array
      */
-    private $fillable = ['id', 'value'];
+    protected $fillable = ['id', 'value'];
 
     /**
      * @return mixed
