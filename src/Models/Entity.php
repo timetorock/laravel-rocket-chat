@@ -54,6 +54,9 @@ class Entity
         $data = [];
 
         foreach ($this->fillable as $field) {
+            if (empty($this->{$field})) {
+                continue;
+            }
             $data[ $field ] = $this->{$field};
         }
 
