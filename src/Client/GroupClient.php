@@ -60,7 +60,7 @@ class GroupClient extends Client
         return new Room([
             'id'      => $groupData->_id,
             'name'    => $groupData->name,
-            'members' => $groupData->usernames,
+            'members' => property_exists($groupData, 'usernames') ? $groupData->usernames : [],
             'type'    => $groupData->t,
         ]);
     }
@@ -247,7 +247,7 @@ class GroupClient extends Client
         return new Room([
             'id'      => $groupData->_id,
             'name'    => $groupData->name,
-            'members' => $groupData->usernames,
+            'members' => property_exists($groupData, 'usernames') ? $groupData->usernames : [],
             'type'    => $groupData->t,
         ]);
     }
@@ -413,7 +413,7 @@ class GroupClient extends Client
         return new Room([
             'id'      => $groupData->_id,
             'name'    => $groupData->name,
-            'members' => $groupData->usernames,
+            'members' => property_exists($groupData, 'usernames') ? $groupData->usernames : [],
             'type'    => $groupData->t,
         ]);
     }
@@ -468,7 +468,7 @@ class GroupClient extends Client
         return new Room([
             'id'      => $groupData->_id,
             'name'    => $groupData->name,
-            'members' => $groupData->usernames,
+            'members' => property_exists($groupData, 'usernames') ? $groupData->usernames : [],
             'type'    => $groupData->t,
         ]);
     }
@@ -523,7 +523,7 @@ class GroupClient extends Client
         return new Room([
             'id'      => $groupData->_id,
             'name'    => $groupData->name,
-            'members' => $groupData->usernames,
+            'members' => property_exists($groupData, 'usernames') ? $groupData->usernames : [],
             'type'    => $groupData->t,
         ]);
     }
@@ -583,7 +583,7 @@ class GroupClient extends Client
         return new Room([
             'id'      => $groupData->_id,
             'name'    => $groupData->name,
-            'members' => $groupData->usernames,
+            'members' => property_exists($groupData, 'usernames') ? $groupData->usernames : [],
             'type'    => $groupData->t,
         ]);
     }

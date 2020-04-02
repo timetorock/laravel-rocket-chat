@@ -42,7 +42,7 @@ class Room extends Entity
     /**
      * @var array
      */
-    protected $fillable = ['name', 'members', 'readOnly', 'type'];
+    protected $fillable = ['id', 'name', 'members', 'readOnly', 'type'];
 
     /**
      * @return string

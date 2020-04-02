@@ -64,7 +64,7 @@ class ChannelClient extends Client
         return new Room([
             'id'      => $channelData->_id,
             'name'    => $channelData->name,
-            'members' => $channelData->usernames,
+            'members' => property_exists($channelData, 'usernames') ? $channelData->usernames : [],
             'type'    => $channelData->t,
         ]);
     }
@@ -251,7 +251,7 @@ class ChannelClient extends Client
         return new Room([
             'id'      => $channelData->_id,
             'name'    => $channelData->name,
-            'members' => $channelData->usernames,
+            'members' => property_exists($channelData, 'usernames') ? $channelData->usernames : [],
             'type'    => $channelData->t,
         ]);
     }
@@ -417,7 +417,7 @@ class ChannelClient extends Client
         return new Room([
             'id'      => $channelData->_id,
             'name'    => $channelData->name,
-            'members' => $channelData->usernames,
+            'members' => property_exists($channelData, 'usernames') ? $channelData->usernames : [],
             'type'    => $channelData->t,
         ]);
     }
@@ -472,7 +472,7 @@ class ChannelClient extends Client
         return new Room([
             'id'      => $channelData->_id,
             'name'    => $channelData->name,
-            'members' => $channelData->usernames,
+            'members' => property_exists($channelData, 'usernames') ? $channelData->usernames : [],
             'type'    => $channelData->t,
         ]);
     }
@@ -527,7 +527,7 @@ class ChannelClient extends Client
         return new Room([
             'id'      => $channelData->_id,
             'name'    => $channelData->name,
-            'members' => $channelData->usernames,
+            'members' => property_exists($channelData, 'usernames') ? $channelData->usernames : [],
             'type'    => $channelData->t,
         ]);
     }
@@ -587,7 +587,7 @@ class ChannelClient extends Client
         return new Room([
             'id'      => $channelData->_id,
             'name'    => $channelData->name,
-            'members' => $channelData->usernames,
+            'members' => property_exists($channelData, 'usernames') ? $channelData->usernames : [],
             'type'    => $channelData->t,
         ]);
     }
