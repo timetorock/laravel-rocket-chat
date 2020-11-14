@@ -83,6 +83,14 @@ class Client
      */
     public function adminLogin()
     {
+        $adminUserID = config("laravel-rocket-chat.admin_user_id");
+        $adminToken = config("laravel-rocket-chat.admin_token");
+
+        if ($adminUserID && $adminToken) {
+            $this->setAuth($adminUserID, $adminToken);
+            return true;
+        }
+
         $adminUser = config("laravel-rocket-chat.admin_username");
         $adminPassword = config("laravel-rocket-chat.admin_password");
 

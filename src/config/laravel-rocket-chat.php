@@ -21,6 +21,14 @@ return [
     'api_root' => env('RC_API_ROOT', '/api/v1/'),
 
     /*
+     * Admin user_id/token, otherwise admin username/password used.
+     * In case of username/password, new token generated with each request
+     */
+
+    'admin_user_id' => env('RC_ADMIN_USER_ID', ''),
+    'admin_token'   => env('RC_ADMIN_TOKEN', ''),
+
+    /*
     |--------------------------------------------------------------------------
     | Admin username
     |--------------------------------------------------------------------------
