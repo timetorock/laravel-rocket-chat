@@ -3,15 +3,19 @@
 namespace Timetorock\LaravelRocketChat\Client;
 
 use Exception;
+use Httpful\Exception\ConnectionErrorException;
 use Httpful\Request;
+use stdClass;
+use Timetorock\LaravelRocketChat\Exceptions\InvalidCredentialsException;
 use Timetorock\LaravelRocketChat\Exceptions\UserActionException;
 use Timetorock\LaravelRocketChat\Helpers\RocketChatRequest;
+use Timetorock\LaravelRocketChat\Models\UserAuthToken;
 
 class Client
 {
 
     const ROCKET_CHAT_SUCCESS_RESPONSE = 'success';
-    const ROCKET_CHAT_ERROR_RESPONSE = 'error';
+    const ROCKET_CHAT_ERROR_RESPONSE   = 'error';
 
     /**
      * @var string
@@ -72,36 +76,54 @@ class Client
     /**
      * @param array $headers
      */
-    protected function setRequestHeaders(array $headers)
+    private function setRequestHeaders(array $headers)
     {
         RocketChatRequest::setHeaders($headers);
     }
 
     /**
-     * @return bool
-     * @throws Exception
+     * Return all or requested headers from request
+     * @param array $keys
+     *
+     * @return array
      */
-    public function adminLogin()
+    private function getRequestHeaders($keys = [])
     {
-        $adminUserID = config("laravel-rocket-chat.admin_user_id");
-        $adminToken = config("laravel-rocket-chat.admin_token");
-
-        if ($adminUserID && $adminToken) {
-            $this->setAuth($adminUserID, $adminToken);
-            return true;
+        if (empty($keys)) {
+            return $this->request->headers;
         }
 
-        $adminUser = config("laravel-rocket-chat.admin_username");
-        $adminPassword = config("laravel-rocket-chat.admin_password");
+        $headers = [];
 
-        if (!$adminUser || !$adminPassword) {
-            return false;
+        foreach ($this->request->headers as $header) {
+            if (!in_array($header, $keys)) {
+                continue;
+            }
+
+            $headers[] = $header;
+        }
+
+        return $headers;
+    }
+
+    /**
+     * @param string $username
+     * @param string $password
+     *
+     * @return UserAuthToken
+     * @throws ConnectionErrorException
+     * @throws InvalidCredentialsException
+     * @throws Exception
+     */
+    public function authToken(string $username, string $password) {
+        if (!$username || !$password) {
+            throw new InvalidCredentialsException();
         }
 
         $response = $this->request()->post($this->apiUrl(UserClient::API_PATH_LOGIN))
             ->body([
-                'user'     => $adminUser,
-                'password' => $adminPassword,
+                'user'     => $username,
+                'password' => $password,
             ])
             ->send();
 
@@ -109,7 +131,29 @@ class Client
 
         $this->setAuth($data->userId, $data->authToken);
 
-        return true;
+        return new UserAuthToken($data->userId, $data->authToken);
+    }
+
+    /**
+     * @throws ConnectionErrorException
+     * @throws InvalidCredentialsException
+     */
+    public function adminLogin()
+    {
+        $adminUserID = config('laravel-rocket-chat.admin_id', '');
+        $adminToken = config('laravel-rocket-chat.admin_token', '');
+
+        if ($adminUserID && $adminToken) {
+            $this->setAuth($adminUserID, $adminToken);
+            return;
+        }
+
+        $adminUser = config('laravel-rocket-chat.admin_username');
+        $adminPassword = config('laravel-rocket-chat.admin_password');
+
+        $auth = $this->authToken($adminUser, $adminPassword);
+
+        $this->setAuth($auth->getId(), $auth->getToken());
     }
 
     /**
@@ -119,10 +163,21 @@ class Client
      * @param $userId
      * @param $authToken
      */
-    public function setAuth($userId, $authToken) {
+    public function setAuth($userId, $authToken)
+    {
         $this->setRequestHeaders([
             'X-User-Id'    => $userId,
             'X-Auth-Token' => $authToken,
+        ]);
+    }
+
+    /**
+     * Get current authentication headers
+     */
+    public function getAuth()
+    {
+        $this->getRequestHeaders([
+            'X-User-Id', 'X-Auth-Token'
         ]);
     }
 

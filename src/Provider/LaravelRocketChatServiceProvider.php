@@ -12,6 +12,7 @@ use Timetorock\LaravelRocketChat\Client\LivechatClient;
 use Timetorock\LaravelRocketChat\Client\RocketChatClient;
 use Timetorock\LaravelRocketChat\Client\SettingClient;
 use Timetorock\LaravelRocketChat\Client\UserClient;
+use Timetorock\LaravelRocketChat\Console\Commands\GenerateRocketChatAdminToken;
 
 class LaravelRocketChatServiceProvider extends ServiceProvider
 {
@@ -22,6 +23,12 @@ class LaravelRocketChatServiceProvider extends ServiceProvider
      */
     public function boot()
     {
+        if ($this->app->runningInConsole()) {
+            $this->commands([
+                GenerateRocketChatAdminToken::class,
+            ]);
+        }
+
         $this->publishes([
             __DIR__ . '/../config/laravel-rocket-chat.php' => config_path('laravel-rocket-chat.php'),
         ], 'config');

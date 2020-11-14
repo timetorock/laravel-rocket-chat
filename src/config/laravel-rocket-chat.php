@@ -25,7 +25,7 @@ return [
      * In case of username/password, new token generated with each request
      */
 
-    'admin_user_id' => env('RC_ADMIN_USER_ID', ''),
+    'admin_id' => env('RC_ADMIN_ID', ''),
     'admin_token'   => env('RC_ADMIN_TOKEN', ''),
 
     /*
