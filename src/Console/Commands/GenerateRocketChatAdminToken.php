@@ -41,15 +41,16 @@ class GenerateRocketChatAdminToken extends Command
      */
     public function handle()
     {
-        $email = $this->ask('Admin email');
+        $username = $this->ask('Admin username');
         $password = $this->ask('Admin password');
 
-        if (!$email || !$password) {
+        if (!$username || !$password) {
             $this->error("invalid credentials provided");
+            return;
         }
 
         $rocketChatClient = new Client();
-        $auth = $rocketChatClient->authToken($email, $password);
+        $auth = $rocketChatClient->authToken($username, $password);
 
         if ($this->option('show')) {
             $this->line('<comment>'.$auth->getId().'</comment>');
@@ -108,24 +109,21 @@ class GenerateRocketChatAdminToken extends Command
     protected function writeNewEnvironmentFileWith(string $key, string $value)
     {
         file_put_contents($this->laravel->environmentFilePath(), preg_replace(
-            $this->keyReplacementPattern($key, $value),
+            $this->keyReplacementPattern($key),
             sprintf('%s=%s', $key, $value),
             file_get_contents($this->laravel->environmentFilePath())
         ));
     }
 
     /**
-     * Get a regex pattern that will match env APP_KEY with any random key.
+     * Get a regex pattern that will match env $key with any random value.
      *
      * @param string $key
-     * @param string $value
      *
      * @return string
      */
-    protected function keyReplacementPattern(string $key, string $value)
+    protected function keyReplacementPattern(string $key)
     {
-        $escaped = preg_quote('='.$value, '/');
-
-        return "/^$key{$escaped}/m";
+        return "/^$key=.*/m";
     }
 }
