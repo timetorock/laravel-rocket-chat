@@ -27,6 +27,7 @@ class ChannelClient extends Client
     const API_PATH_CHANNEL_GET_INTEGRATIONS = 'channels.getIntegrations';
     const API_PATH_CHANNEL_GET_HISTORY      = 'channels.history';
     const API_PATH_CHANNEL_GET_INFO         = 'channels.info';
+    const API_PATH_CHANNEL_DELETE           = 'channels.delete';
     const API_PATH_CHANNEL_INVITE           = 'channels.invite';
     const API_PATH_CHANNEL_KICK             = 'channels.kick';
     const API_PATH_CHANNEL_LEAVE            = 'channels.leave';
@@ -254,6 +255,29 @@ class ChannelClient extends Client
             'members' => property_exists($channelData, 'usernames') ? $channelData->usernames : [],
             'type'    => $channelData->t,
         ]);
+    }
+
+    /**
+     * Removes the channel.
+     *
+     * @param string $channelID
+     *
+     * @return $this
+     * @throws ConnectionErrorException
+     * @throws ChannelActionException
+     * @throws Exception
+     */
+    public function delete($channelID)
+    {
+        if (!$channelID) {
+            throw new ChannelActionException("Room ID not specified.");
+        }
+
+        $response = $this->request()->post($this->apiUrl(self::API_PATH_CHANNEL_DELETE))
+            ->body(['roomId' => $channelID])
+            ->send();
+
+        return $this->handleResponse($response, new ChannelActionException());
     }
 
     /**
