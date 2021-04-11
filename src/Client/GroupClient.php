@@ -23,6 +23,7 @@ class GroupClient extends Client
     const API_PATH_GROUP_GET_INTEGRATIONS = 'groups.getIntegrations';
     const API_PATH_GROUP_GET_HISTORY      = 'groups.history';
     const API_PATH_GROUP_GET_INFO         = 'groups.info';
+    const API_PATH_GROUP_DELETE           = 'groups.delete';
     const API_PATH_GROUP_INVITE           = 'groups.invite';
     const API_PATH_GROUP_KICK             = 'groups.kick';
     const API_PATH_GROUP_LEAVE            = 'groups.leave';
@@ -250,6 +251,29 @@ class GroupClient extends Client
             'members' => property_exists($groupData, 'usernames') ? $groupData->usernames : [],
             'type'    => $groupData->t,
         ]);
+    }
+
+    /**
+     * Deletes the group.
+     *
+     * @param string $groupID
+     *
+     * @return $this
+     * @throws ConnectionErrorException
+     * @throws GroupActionException
+     * @throws Exception
+     */
+    public function delete($groupID)
+    {
+        if (!$groupID) {
+            throw new GroupActionException("Room ID not specified.");
+        }
+
+        $response = $this->request()->post($this->apiUrl(self::API_PATH_GROUP_DELETE))
+            ->body(['roomId' => $groupID])
+            ->send();
+
+        return $this->handleResponse($response, new GroupActionException());
     }
 
     /**
