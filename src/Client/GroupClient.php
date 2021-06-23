@@ -175,6 +175,7 @@ class GroupClient extends Client
      * @param string $roomName
      * @param string $userID
      *
+     * @return mixed
      * @throws ConnectionErrorException
      * @throws GroupActionException
      * @throws Exception
@@ -203,7 +204,7 @@ class GroupClient extends Client
                 $this->apiUrl(self::API_PATH_GROUP_GET_COUNTERS, $queryParams)
             )->send();
 
-        $this->handleResponse($response, new GroupActionException());
+        return $this->handleResponse($response, new GroupActionException());
     }
 
     /**
