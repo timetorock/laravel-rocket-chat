@@ -4,6 +4,7 @@ namespace Timetorock\LaravelRocketChat\Client;
 
 use Exception;
 use Httpful\Exception\ConnectionErrorException;
+use Timetorock\LaravelRocketChat\Client\Responses\GroupClient\GetCountersResponse;
 use Timetorock\LaravelRocketChat\Exceptions\GroupActionException;
 use Timetorock\LaravelRocketChat\Models\Room;
 
@@ -200,11 +201,23 @@ class GroupClient extends Client
             throw new GroupActionException("Room ID or RoomName not specified.");
         }
 
-        $response = $this->request()->get(
+        $response = $this->request()
+            ->get(
                 $this->apiUrl(self::API_PATH_GROUP_GET_COUNTERS, $queryParams)
             )->send();
 
-        return $this->handleResponse($response, new GroupActionException());
+        $getCountersResponse = $this->handleResponse($response, new GroupActionException());
+
+        return new GetCountersResponse(
+            $getCountersResponse->members ?: 0,
+            $getCountersResponse->msgs ?: 0,
+            $getCountersResponse->userMentions ?: 0,
+            $getCountersResponse->unreads ?: 0,
+            $getCountersResponse->unreadsFrom ?: '',
+            $getCountersResponse->latest ?: '',
+            $getCountersResponse->joined ?: false,
+            $getCountersResponse->success ?: false
+        );
     }
 
     /**
