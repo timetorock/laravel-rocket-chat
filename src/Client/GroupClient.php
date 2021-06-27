@@ -176,7 +176,7 @@ class GroupClient extends Client
      * @param string $roomName
      * @param string $userID
      *
-     * @return mixed
+     * @return GetCountersResponse
      * @throws ConnectionErrorException
      * @throws GroupActionException
      * @throws Exception
