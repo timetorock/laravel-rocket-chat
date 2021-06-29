@@ -4,8 +4,9 @@ namespace Timetorock\LaravelRocketChat\Client;
 
 use Exception;
 use Httpful\Exception\ConnectionErrorException;
-use Timetorock\LaravelRocketChat\Models\Room;
+use Timetorock\LaravelRocketChat\Client\Responses\GroupClient\GetCountersResponse;
 use Timetorock\LaravelRocketChat\Exceptions\GroupActionException;
+use Timetorock\LaravelRocketChat\Models\Room;
 
 /**
  * Operations with private channels only.
@@ -20,6 +21,7 @@ class GroupClient extends Client
     const API_PATH_GROUP_ADD_OWNER        = 'groups.addOwner';
     const API_PATH_GROUP_ARCHIVE          = 'groups.archive';
     const API_PATH_GROUP_CLOSE            = 'groups.close';
+    const API_PATH_GROUP_GET_COUNTERS     = 'groups.counters';
     const API_PATH_GROUP_GET_INTEGRATIONS = 'groups.getIntegrations';
     const API_PATH_GROUP_GET_HISTORY      = 'groups.history';
     const API_PATH_GROUP_GET_INFO         = 'groups.info';
@@ -167,6 +169,55 @@ class GroupClient extends Client
             ->send();
 
         return $this->handleResponse($response, new GroupActionException());
+    }
+
+    /**
+     * @param string $roomID
+     * @param string $roomName
+     * @param string $userID
+     *
+     * @return GetCountersResponse
+     * @throws ConnectionErrorException
+     * @throws GroupActionException
+     * @throws Exception
+     */
+    public function counters($roomID, $roomName = '', $userID = '')
+    {
+        $queryParams = [];
+
+        if (!empty($roomID)) {
+            $queryParams['roomId'] = $roomID;
+        }
+
+        if (!empty($roomName)) {
+            $queryParams['roomName'] = $roomName;
+        }
+
+        if (!empty($userID)) {
+            $queryParams['userId'] = $userID;
+        }
+
+        if (empty($queryParams['roomId']) && empty($queryParams['roomName'])) {
+            throw new GroupActionException("Room ID or RoomName not specified.");
+        }
+
+        $response = $this->request()
+            ->get(
+                $this->apiUrl(self::API_PATH_GROUP_GET_COUNTERS, $queryParams)
+            )->send();
+
+        $getCountersResponse = $this->handleResponse($response, new GroupActionException());
+
+        return new GetCountersResponse(
+            $getCountersResponse->members ?: 0,
+            $getCountersResponse->msgs ?: 0,
+            $getCountersResponse->userMentions ?: 0,
+            $getCountersResponse->unreads ?: 0,
+            $getCountersResponse->unreadsFrom ?: '',
+            $getCountersResponse->latest ?: '',
+            $getCountersResponse->joined ?: false,
+            $getCountersResponse->success ?: false
+        );
     }
 
     /**
