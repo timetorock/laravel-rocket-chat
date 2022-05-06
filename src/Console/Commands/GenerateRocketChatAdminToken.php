@@ -23,7 +23,9 @@ class GenerateRocketChatAdminToken extends Command
      */
     protected $signature = 'rc:admin:generate
                     {--show : Display the key instead of modifying files}
-                    {--force : Force the operation to run when in production}';
+                    {--force : Force the operation to run when in production}
+                    {--username= : Admin username}
+                    {--password= : Admin password}';
 
     /**
      * The console command description.
@@ -41,8 +43,16 @@ class GenerateRocketChatAdminToken extends Command
      */
     public function handle()
     {
-        $username = $this->ask('Admin username');
-        $password = $this->ask('Admin password');
+        $username = $this->option('username');
+        $password = $this->option('password');
+
+        if (!$username) {
+            $username = $this->ask('Admin username');
+        }
+
+        if (!$password) {
+            $password = $this->ask('Admin password');
+        }
 
         if (!$username || !$password) {
             $this->error("invalid credentials provided");

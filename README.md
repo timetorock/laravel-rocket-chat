@@ -1,4 +1,4 @@
-laravel-rocket-chat is a rest client package for Laravel 6.x, 7.x, 8.x to communicate with Rocket.Chat API.
+laravel-rocket-chat is a rest client package for Laravel 6.x, 7.x, 8.x, 9.x to communicate with Rocket.Chat API.
 
 ## How to install
 
@@ -36,7 +36,11 @@ To generate admin API userID/token pair you can use command delivered with this 
 
 By default, it will set `RC_ADMIN_ID` and `RC_ADMIN_TOKEN` variables.
 
-You can use `--show` option just to fetch new pair of credentials.
+You can use `--show` option just to fetch a new pair of credentials.
+You can use `--force` to force the operation to run when in production
+
+You can also provide admin credentials via `--username=test` and `--password=test` parameters. 
+This option is useful when you want for example to run a command on a schedule.
 
 ## Example
 
