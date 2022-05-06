@@ -13,7 +13,7 @@ class GenerateRocketChatAdminToken extends Command
 {
     use ConfirmableTrait;
 
-    const RC_ADMIN_ID = 'RC_ADMIN_ID';
+    const RC_ADMIN_ID    = 'RC_ADMIN_ID';
     const RC_ADMIN_TOKEN = 'RC_ADMIN_TOKEN';
 
     /**
@@ -41,27 +41,35 @@ class GenerateRocketChatAdminToken extends Command
      */
     public function handle()
     {
-        $username = $this->ask('Admin username');
-        $password = $this->ask('Admin password');
+        $adminUser = config('laravel-rocket-chat.admin_username');
+        $adminPassword = config('laravel-rocket-chat.admin_password');
 
-        if (!$username || !$password) {
+        if (!$adminUser) {
+            $adminUser = $this->ask('Admin username');
+        }
+
+        if (!$adminPassword) {
+            $adminPassword = $this->ask('Admin password');
+        }
+
+        if (!$adminUser || !$adminPassword) {
             $this->error("invalid credentials provided");
             return;
         }
 
         $rocketChatClient = new Client();
-        $auth = $rocketChatClient->authToken($username, $password);
+        $auth = $rocketChatClient->authToken($adminUser, $adminPassword);
 
         if ($this->option('show')) {
-            $this->line('<comment>'.$auth->getId().'</comment>');
-            $this->line('<comment>'.$auth->getToken().'</comment>');
+            $this->line(sprintf('<comment>%s</comment>', $auth->getId()));
+            $this->line(sprintf('<comment>%s</comment>', $auth->getToken()));
             return;
         }
 
         // Next, we will replace the application key in the environment file so it is
         // automatically setup for this developer. This key gets generated using a
         // secure random byte generator and is later base64 encoded for storage.
-        if (! $this->setAdminTokenCredentials($auth->getId(), $auth->getToken())) {
+        if (!$this->setAdminTokenCredentials($auth->getId(), $auth->getToken())) {
             return;
         }
 
@@ -84,11 +92,11 @@ class GenerateRocketChatAdminToken extends Command
         $currentAdminID = $this->laravel['config']['laravel-rocket-chat.admin_id'];
         $currentAdminToken = $this->laravel['config']['laravel-rocket-chat.admin_token'];
 
-        if (strlen($currentAdminID) !== 0 && (! $this->confirmToProceed())) {
+        if (strlen($currentAdminID) !== 0 && (!$this->confirmToProceed())) {
             return false;
         }
 
-        if (strlen($currentAdminToken) !== 0 && (! $this->confirmToProceed())) {
+        if (strlen($currentAdminToken) !== 0 && (!$this->confirmToProceed())) {
             return false;
         }
 
