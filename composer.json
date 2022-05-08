@@ -1,20 +1,20 @@
 {
     "name": "timetorock/laravel-rocket-chat",
-    "description": "Rocket Chat REST API client for Laravel 6.x, 7.x, 8.x",
+    "description": "Rocket Chat REST API client for Laravel 6.x, 7.x, 8.x, 9.x",
     "license": "MIT",
     "type": "library",
     "keywords": ["laravel", "rocket-chat-laravel", "rocket-chat", "api-client"],
     "authors": [
         {
-            "name": "Aleksandr Natalenko",
+            "name": "Oleksandr Natalenko",
             "email": "alejandronat@gmail.com"
         }
     ],
     "prefer-stable": true,
     "require": {
-        "illuminate/support": "^6.0|^7.0|^8.0",
+        "illuminate/support": "^6.0|^7.0|^8.0|^9.0",
         "nategood/httpful": "*",
-        "illuminate/console": "^6.0|^7.0|^8.0"
+        "illuminate/console": "^6.0|^7.0|^8.0|^9.0"
     },
     "autoload": {
         "psr-4": {
