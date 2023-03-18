@@ -1,4 +1,4 @@
-laravel-rocket-chat is a rest client package for Laravel 6.x, 7.x, 8.x, 9.x to communicate with Rocket.Chat API.
+laravel-rocket-chat is a rest client package for Laravel 6.x, 7.x, 8.x, 9.x, 10.x to communicate with Rocket.Chat API.
 
 ## How to install
 
