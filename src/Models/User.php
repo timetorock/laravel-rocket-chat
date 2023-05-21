@@ -2,6 +2,8 @@
 
 namespace Timetorock\LaravelRocketChat\Models;
 
+use Timetorock\LaravelRocketChat\Client\Responses\UserClient\UserInfo\UserInfoRooms;
+
 /**
  * Class User
  * @package Timetorock\LaravelRocketChat\Models
@@ -10,358 +12,249 @@ class User extends Entity
 {
     const DEFAULT_USER_ROLE = 'user';
 
-    /**
-     * @var string
-     */
-    protected $id;
-
-    /**
-     * @var string
-     */
-    protected $username;
-
-    /**
-     * @var string
-     */
-    protected $password;
-
-    /**
-     * @var string
-     */
-    protected $name;
-
-    /**
-     * @var string
-     */
-    protected $email;
+    protected string        $id;
+    protected string        $username;
+    protected string        $password;
+    protected string        $name;
+    protected string        $email;
+    protected array         $emails;
+    protected array         $roles                 = [self::DEFAULT_USER_ROLE];
+    protected bool          $active                = true;
+    protected string        $status;
+    protected string        $type;
+    protected string        $authToken;
+    protected string        $avatarUrl;
+    protected bool          $joinDefaultChannels   = true;
+    protected bool          $requirePasswordChange = false;
+    protected bool          $sendWelcomeEmail      = false;
+    protected bool          $verified              = false;
+    protected array         $settings              = [];
+    protected array         $customFields          = [];
+    protected UserInfoRooms $userRooms;
 
     /**
      * @var array
      */
-    protected $emails;
-
-    /**
-     * @var array
-     */
-    protected $roles = [self::DEFAULT_USER_ROLE];
-
-    /**
-     * @var bool
-     */
-    protected $active = true;
-
-    /**
-     * @var string
-     */
-    protected $status;
-
-    /**
-     * @var string
-     */
-    protected $type;
-
-    /**
-     * @var bool
-     */
-    protected $joinDefaultChannels = true;
-
-    /**
-     * @var bool
-     */
-    protected $requirePasswordChange = false;
-
-    /**
-     * @var bool
-     */
-    protected $sendWelcomeEmail = false;
-
-    /**
-     * @var bool
-     */
-    protected $verified = false;
-
-    /**
-     * @var string
-     */
-    protected $authToken;
-
-    /**
-     * @var array
-     */
-    protected $fillable = [
-        "id", "username", "password", "name", "email", "roles", "active",
-        "joinDefaultChannels", "requirePasswordChange", "sendWelcomeEmail", "verified",
+    protected array $fillable = [
+        'id',
+        'avatarUrl',
+        'username',
+        'password',
+        'name',
+        'email',
+        'roles',
+        'active',
+        'joinDefaultChannels',
+        'requirePasswordChange',
+        'sendWelcomeEmail',
+        'verified',
+        'customFields',
     ];
 
-    /** Getters and Setters */
-    /**
-     * @return string
-     */
-    public function getId()
+    public function getId(): string
     {
         return $this->id;
     }
 
-    /**
-     * @param string $id
-     *
-     * @return $this
-     */
-    public function setId($id)
+    public function setId($id): User
     {
         $this->id = $id;
 
         return $this;
     }
 
-    /**
-     * @return string
-     */
-    public function getUsername()
+    public function getUsername(): string
     {
         return $this->username;
     }
 
-    /**
-     * @param string $username
-     *
-     * @return $this
-     */
-    public function setUsername($username)
+    public function setUsername($username): User
     {
         $this->username = $username;
 
         return $this;
     }
 
-    /**
-     * @return string
-     */
-    public function getPassword()
+    public function getPassword(): string
     {
         return $this->password;
     }
 
-    /**
-     * @param string $password
-     *
-     * @return $this
-     */
-    public function setPassword($password)
+    public function setPassword($password): User
     {
         $this->password = $password;
 
         return $this;
     }
 
-    /**
-     * @return string
-     */
-    public function getEmail()
+    public function getEmail(): string
     {
         return $this->email;
     }
 
 
-    /**
-     * @param string $email
-     *
-     * @return $this
-     */
-    public function setEmail($email)
+    public function setEmail($email): User
     {
         $this->email = $email;
 
         return $this;
     }
 
-    /**
-     * @return array
-     */
-    public function getEmails()
+    public function getEmails(): array
     {
         return $this->emails;
     }
 
-    /**
-     * @param array $emails
-     */
-    public function setEmails($emails)
+    public function setEmails(array $emails): User
     {
         $this->emails = $emails;
+
+        return $this;
     }
 
-    /**
-     * @return string
-     */
-    public function getName()
+    public function getName(): string
     {
         return $this->name;
     }
 
-    /**
-     * @param string $name
-     *
-     * @return $this
-     */
-    public function setName($name)
+    public function setName($name): User
     {
         $this->name = $name;
 
         return $this;
     }
 
-    /**
-     * @return array
-     */
-    public function getRoles()
+    public function getRoles(): array
     {
         return $this->roles;
     }
 
-    /**
-     * @param array $roles
-     *
-     * @return $this
-     */
-    public function setRoles($roles)
+    public function setRoles($roles): User
     {
         $this->roles = $roles;
 
         return $this;
     }
 
-    /**
-     * @return bool
-     */
-    public function isActive()
+    public function isActive(): bool
     {
         return $this->active;
     }
 
-    /**
-     * @param bool $active
-     *
-     * @return User
-     */
-    public function setActive($active)
+    public function setActive($active): User
     {
         $this->active = $active;
+
         return $this;
     }
 
-    /**
-     * @return bool
-     */
-    public function isJoinDefaultChannels()
+    public function isJoinDefaultChannels(): bool
     {
         return $this->joinDefaultChannels;
     }
 
-    /**
-     * @param bool $joinDefaultChannels
-     *
-     * @return User
-     */
-    public function setJoinDefaultChannels($joinDefaultChannels)
+    public function setJoinDefaultChannels($joinDefaultChannels): User
     {
         $this->joinDefaultChannels = $joinDefaultChannels;
 
         return $this;
     }
 
-    /**
-     * @return bool
-     */
-    public function isRequirePasswordChange()
+    public function isRequirePasswordChange(): bool
     {
         return $this->requirePasswordChange;
     }
 
-    /**
-     * @param bool $requirePasswordChange
-     *
-     * @return User
-     */
-    public function setRequirePasswordChange($requirePasswordChange)
+    public function setRequirePasswordChange($requirePasswordChange): User
     {
         $this->requirePasswordChange = $requirePasswordChange;
 
         return $this;
     }
 
-    /**
-     * @return bool
-     */
-    public function isSendWelcomeEmail()
+    public function isSendWelcomeEmail(): bool
     {
         return $this->sendWelcomeEmail;
     }
 
-    /**
-     * @param bool $sendWelcomeEmail
-     *
-     * @return User
-     */
-    public function setSendWelcomeEmail($sendWelcomeEmail)
+    public function setSendWelcomeEmail($sendWelcomeEmail): User
     {
         $this->sendWelcomeEmail = $sendWelcomeEmail;
 
         return $this;
     }
 
-    /**
-     * @return bool
-     */
-    public function isVerified()
+    public function isVerified(): bool
     {
         return $this->verified;
     }
 
-    /**
-     * @param bool $verified
-     *
-     * @return User
-     */
-    public function setVerified($verified)
+    public function setVerified($verified): User
     {
         $this->verified = $verified;
 
         return $this;
     }
 
-    /**
-     * @param string $authToken
-     */
-    public function setAuthToken($authToken)
+    public function setAuthToken(string $authToken): User
     {
         $this->authToken = $authToken;
+
+        return $this;
     }
 
-    /**
-     * @return string
-     */
-    public function getAuthToken()
+    public function getAuthToken(): string
     {
         return $this->authToken;
+    }
+
+    public function getCustomFields(): array
+    {
+        return $this->customFields;
+    }
+
+    public function setCustomFields(array $customFields): User
+    {
+        $this->customFields = $customFields;
+
+        return $this;
+    }
+
+    public function getAvatarUrl(): string
+    {
+        return $this->avatarUrl;
+    }
+
+    public function getUserRooms(): UserInfoRooms
+    {
+        return $this->userRooms;
+    }
+
+    public function setUserRooms(UserInfoRooms $userRooms): void
+    {
+        $this->userRooms = $userRooms;
     }
 
     /**
      * Return available user info.
      * @return array
      */
-    public function getUserData()
+    public function getUserData(): array
     {
         return [
-            'id'       => $this->id,
-            'username' => $this->username,
-            'name'     => $this->name,
-            'email'    => $this->email,
-            'emails'   => $this->emails,
-            'roles'    => $this->roles,
-            'active'   => $this->active,
-            'status'   => $this->status,
-            'type'     => $this->type,
+            'id'           => $this->id,
+            'username'     => $this->username,
+            'name'         => $this->name,
+            'email'        => $this->email,
+            'emails'       => $this->emails,
+            'roles'        => $this->roles,
+            'active'       => $this->active,
+            'status'       => $this->status,
+            'type'         => $this->type,
+            'settings'     => $this->settings,
+            'customFields' => $this->customFields,
+            'avatarUrl'    => $this->avatarUrl,
+            'userRooms'    => $this->userRooms,
         ];
     }
 }
