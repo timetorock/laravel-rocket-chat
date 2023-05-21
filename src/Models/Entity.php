@@ -11,7 +11,7 @@ class Entity
      * can be filled fast from array
      * @var array
      */
-    protected $fillable = [];
+    protected array $fillable = [];
 
     /**
      * Entity constructor. You can create entity with pre filled data.
@@ -31,7 +31,7 @@ class Entity
      *
      * @return $this
      */
-    public function fill(array $params)
+    public function fill(array $params): Entity
     {
         foreach ($params as $field => $value) {
 
@@ -50,7 +50,8 @@ class Entity
      *
      * @return array
      */
-    public function getFillableData() {
+    public function getFillableData(): array
+    {
         $data = [];
 
         foreach ($this->fillable as $field) {
@@ -71,7 +72,7 @@ class Entity
      *
      * @return $this
      */
-    public function setFillable(array $fillable)
+    public function setFillable(array $fillable): Entity
     {
         $this->fillable = $fillable;
 

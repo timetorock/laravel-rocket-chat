@@ -40,7 +40,7 @@ class Team extends Entity
     /**
      * @var array
      */
-    protected $fillable = ['id', 'name', 'members', 'room', 'type'];
+    protected array $fillable = ['id', 'name', 'members', 'room', 'type'];
 
     /**
      * @return string

@@ -4,8 +4,10 @@ namespace Timetorock\LaravelRocketChat\Client;
 
 use Exception;
 use Httpful\Exception\ConnectionErrorException;
-use Timetorock\LaravelRocketChat\Models\User;
+use Timetorock\LaravelRocketChat\Client\Responses\UserClient\UserInfo\UserInfoRoom;
+use Timetorock\LaravelRocketChat\Client\Responses\UserClient\UserInfo\UserInfoRooms;
 use Timetorock\LaravelRocketChat\Exceptions\UserActionException;
+use Timetorock\LaravelRocketChat\Models\User;
 
 class UserClient extends Client
 {
@@ -29,14 +31,13 @@ class UserClient extends Client
 
 
     /**
-     * @param User $user
      * @param bool $useAsClientAuth Future requests will be done on behalf of this user.
      *
      * @return User
      * @throws ConnectionErrorException
      * @throws Exception
      */
-    public function login(User $user, $useAsClientAuth = false)
+    public function login(User $user, bool $useAsClientAuth = false): User
     {
         $response = $this->request()
             ->post($this->apiUrl(self::API_PATH_LOGIN))
@@ -69,39 +70,41 @@ class UserClient extends Client
     }
 
     /**
-     * @return User
      * @throws ConnectionErrorException
      * @throws Exception
      */
-    public function me()
+    public function me(): User
     {
         $response = $this->request()->get($this->apiUrl(self::API_PATH_ME))->send();
         $body = $this->handleResponse($response, new UserActionException());
 
         $user = new User();
         $user->fill([
-            'id'       => $body->_id,
-            'name'     => $body->name,
-            'email'    => $body->emails[0]->address,
-            'emails'   => $body->emails,
-            'username' => $body->username,
-            'active'   => $body->active,
-            'roles'    => isset($body->roles) ? $body->roles : [],
-            'status'   => $body->status,
-            'type'     => $body->type,
+            'id'        => $body->_id,
+            'name'      => $body->name,
+            'email'     => $body->emails[0]->address,
+            'emails'    => $body->emails,
+            'username'  => $body->username,
+            'active'    => $body->active,
+            'roles'     => $body->roles ?? [],
+            'status'    => $body->status,
+            'type'      => $body->type,
+            'settings'  => $body->settings ?? [],
+            'avatarUrl' => $body->avatarUrl ?? null,
         ]);
+
+        if (!empty($userData->customFields)) {
+            $user->setCustomFields((array) $userData->customFields);
+        }
 
         return $user;
     }
 
     /**
-     * @param User $user
-     *
-     * @return User
      * @throws ConnectionErrorException
      * @throws Exception
      */
-    public function create(User $user)
+    public function create(User $user): User
     {
         $response = $this->request()->post($this->apiUrl(self::API_PATH_USER_CREATE))
             ->body($user->getFillableData())
@@ -120,8 +123,12 @@ class UserClient extends Client
             'roles'    => $userData->roles,
             'status'   => $userData->status,
             'type'     => $userData->type,
+            'settings' => $userData->settings ?? [],
         ]);
 
+        if (!empty($userData->customFields)) {
+            $user->setCustomFields((array) $userData->customFields);
+        }
 
         return $user;
     }
@@ -171,16 +178,19 @@ class UserClient extends Client
     }
 
     /**
-     * @param string $id Can be ID or Username
+     * @param string $id        Can be ID or Username
      * @param string $paramType
+     * @param bool   $userRooms Will load a list of user rooms with counters.
      *
      * @return User
      * @throws ConnectionErrorException
      * @throws UserActionException
-     * @throws Exception
      */
-    public function info($id, $paramType = 'userId')
-    {
+    public function info(
+        string $id,
+        string $paramType = 'userId',
+        bool   $userRooms = false
+    ): User {
         if (!in_array($paramType, ['userId', 'username'])) {
             throw new UserActionException('bad method parameter value');
         }
@@ -189,7 +199,13 @@ class UserClient extends Client
             throw new UserActionException('user ID not specified');
         }
 
-        $response = $this->request()->get($this->apiUrl(self::API_PATH_USER_INFO, [$paramType => $id]))->send();
+        $getParameters = [$paramType => $id];
+
+        if ($userRooms) {
+            $getParameters['userRooms'] = 1;
+        }
+
+        $response = $this->request()->get($this->apiUrl(self::API_PATH_USER_INFO, $getParameters))->send();
         $userData = $this->handleResponse($response, new UserActionException(), [self::USER]);
 
         $user = new User();
@@ -204,6 +220,12 @@ class UserClient extends Client
             'status'   => $userData->status,
             'type'     => $userData->type,
         ]);
+
+        if (!empty($userData->rooms)) {
+            $user->setUserRooms(new UserInfoRooms(
+                $userData->rooms
+            ));
+        }
 
         return $user;
     }
