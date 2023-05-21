@@ -10,12 +10,12 @@ class UserInfoRooms
     {
         foreach ($rooms as $room) {
             $this->rooms[ $room->_id ] = new UserInfoRoom(
-                (string) $room->_id ?? '',
-                (string) $room->rid ?? '',
-                (string) $room->name ?? '',
-                (string) $room->t ?? '',
-                (int) $room->unread ?? 0,
-                (array) $room->roles ?? []
+                $room->_id ?? '',
+                $room->rid ?? '',
+                $room->name ?? '',
+                $room->t ?? '',
+                $room->unread ?? 0,
+                $room->roles ?? []
             );
         }
     }
