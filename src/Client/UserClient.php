@@ -174,6 +174,10 @@ class UserClient extends Client
             'type'     => $userData->type,
         ]);
 
+        if (!empty($userData->customFields)) {
+            $user->setCustomFields((array) $userData->customFields);
+        }
+
         return $user;
     }
 
@@ -220,6 +224,10 @@ class UserClient extends Client
             'status'   => $userData->status,
             'type'     => $userData->type,
         ]);
+
+        if (!empty($userData->customFields)) {
+            $user->setCustomFields((array) $userData->customFields);
+        }
 
         if (!empty($userData->rooms)) {
             $user->setUserRooms(new UserInfoRooms(
