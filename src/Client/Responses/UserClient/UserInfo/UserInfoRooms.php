@@ -20,7 +20,7 @@ class UserInfoRooms
         }
     }
 
-    public function addRoom(UserInfoRoom $room)
+    public function setRoom(UserInfoRoom $room)
     {
         $this->rooms[ $room->getRoomID() ] = $room;
     }
