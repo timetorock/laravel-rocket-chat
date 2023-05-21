@@ -205,7 +205,7 @@ class UserClient extends Client
         $getParameters = [$paramType => $id];
 
         if ($userRooms) {
-            $getParameters['fields'] = ['userRooms' => 1];
+            $getParameters['fields'] = '{"userRooms": 1}';
         }
 
         $response = $this->request()->get($this->apiUrl(self::API_PATH_USER_INFO, $getParameters))->send();
