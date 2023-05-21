@@ -51,6 +51,13 @@ class User extends Entity
         'customFields',
     ];
 
+    public function __construct(array $userData = [])
+    {
+        $this->userRooms = new UserInfoRooms([]);
+
+        parent::__construct($userData);
+    }
+
     public function getId(): string
     {
         return $this->id;
