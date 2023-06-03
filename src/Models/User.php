@@ -12,18 +12,18 @@ class User extends Entity
 {
     const DEFAULT_USER_ROLE = 'user';
 
-    protected string        $id;
-    protected string        $username;
-    protected string        $password;
-    protected string        $name;
-    protected string        $email;
-    protected array         $emails;
+    protected string        $id                    = '';
+    protected string        $username              = '';
+    protected string        $password              = '';
+    protected string        $name                  = '';
+    protected string        $email                 = '';
+    protected array         $emails                = [];
     protected array         $roles                 = [self::DEFAULT_USER_ROLE];
     protected bool          $active                = true;
-    protected string        $status;
-    protected string        $type;
-    protected string        $authToken;
-    protected string        $avatarUrl;
+    protected string        $status                = '';
+    protected string        $type                  = '';
+    protected string        $authToken             = '';
+    protected string        $avatarUrl             = '';
     protected bool          $joinDefaultChannels   = true;
     protected bool          $requirePasswordChange = false;
     protected bool          $sendWelcomeEmail      = false;
